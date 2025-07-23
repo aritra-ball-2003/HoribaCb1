@@ -29,10 +29,10 @@ VECTOR_STORE_NAME = "simple-rag"
 PERSIST_DIRECTORY = "./chroma_db"
 
 
-def ingest_pdf(doc_url):
+def ingest_pdf(DOC_URL):
     """Download and load a PDF from a URL."""
     try:
-        response = requests.get(doc_url)
+        response = requests.get(DOC_URL)
         response.raise_for_status()
         with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as tmp_file:
             tmp_file.write(response.content)
