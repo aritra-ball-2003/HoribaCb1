@@ -21,23 +21,23 @@ from langchain.embeddings import OpenAIEmbeddings
 logging.basicConfig(level=logging.INFO)
 
 # Constants
-DOC_PATH = "Horibacb1\\HORIBA India Private Limited.pdf"
+DOC_URL = "https://github.com/aritra-ball-2003/HoribaCb1/blob/main/HORIBA%20India%20Private%20Limited.py"
 MODEL_NAME = "llama3.2:latest"
 # EMBEDDING_MODEL = "nomic-embed-text"
 VECTOR_STORE_NAME = "simple-rag"
 PERSIST_DIRECTORY = "./chroma_db"
 
 
-def ingest_pdf(doc_path):
+def ingest_pdf(doc_url):
     """Load PDF documents."""
     
-    if os.path.exists(doc_path):
-        loader = UnstructuredPDFLoader(file_path=doc_path)
+    if os.path.exists(doc_url):
+        loader = UnstructuredPDFLoader(file_path=doc_url)
         data = loader.load()
         logging.info("PDF loaded successfully.")
         return data
     else:
-        logging.error(f"PDF file not found at path: {doc_path}")
+        logging.error(f"PDF file not found at path: {DOC_URL}")
         st.error("PDF file not found.")
         return None
 
@@ -69,7 +69,7 @@ def load_vector_db():
         logging.info("Loaded existing vector database.")
     else:
         # Load and process the PDF document
-        data = ingest_pdf(DOC_PATH)
+        data = ingest_pdf(DOC_URL)
         if data is None:
             return None
 
