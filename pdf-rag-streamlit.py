@@ -20,9 +20,9 @@ from langchain.chat_models import ChatOpenAI
 logging.basicConfig(level=logging.INFO)
 
 # Constants
-DOC_PATH = "C:\\Users\\Aritra.ball\\Downloads\\Horribanewcb\\HORIBA India Private Limited.pdf"
+DOC_PATH = "Horibacb1//HORIBA India Private Limited.pdf"
 MODEL_NAME = "llama3.2:latest"
-EMBEDDING_MODEL = "nomic-embed-text"
+# EMBEDDING_MODEL = "nomic-embed-text"
 VECTOR_STORE_NAME = "simple-rag"
 PERSIST_DIRECTORY = "./chroma_db"
 
