@@ -16,7 +16,8 @@ from langchain.retrievers.multi_query import MultiQueryRetriever
 # from langchain.embeddings import OpenAIEmbeddings
 from langchain.chat_models import ChatOpenAI
 from langchain.embeddings import OpenAIEmbeddings
-
+import requests
+import tempfile 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 
@@ -28,17 +29,22 @@ VECTOR_STORE_NAME = "simple-rag"
 PERSIST_DIRECTORY = "./chroma_db"
 
 
-def ingest_pdf(doc_path):
-    """Load PDF documents."""
-    
-    if os.path.exists(doc_path):
-        loader = UnstructuredPDFLoader(file_path=doc_path)
+def ingest_pdf(doc_url):
+    """Download and load a PDF from a URL."""
+    try:
+        response = requests.get(doc_url)
+        response.raise_for_status()
+        with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as tmp_file:
+            tmp_file.write(response.content)
+            tmp_path = tmp_file.name
+
+        loader = UnstructuredPDFLoader(file_path=tmp_path)
         data = loader.load()
-        logging.info("PDF loaded successfully.")
+        logging.info("PDF loaded successfully from GitHub.")
         return data
-    else:
-        logging.error(f"PDF file not found at path: {DOC_URL}")
-        st.error("PDF file not found.")
+    except Exception as e:
+        logging.error(f"Error loading PDF from URL: {e}")
+        st.error(f"Failed to load PDF from GitHub: {e}")
         return None
 
 
