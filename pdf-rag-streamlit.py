@@ -16,6 +16,7 @@ from langchain.retrievers.multi_query import MultiQueryRetriever
 # from langchain.embeddings import OpenAIEmbeddings
 from langchain.chat_models import ChatOpenAI
 
+
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 
@@ -53,7 +54,7 @@ def split_documents(documents):
 def load_vector_db():
     """Load or create the vector database."""
     # Pull the embedding model if not already available
-    ollama.pull(EMBEDDING_MODEL)
+    # ollama.pull(EMBEDDING_MODEL)
 
     embedding = OpenAIEmbeddings
     llm = ChatOpenAI(model="gpt-3.5-turbo")
