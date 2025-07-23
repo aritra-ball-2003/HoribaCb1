@@ -12,7 +12,7 @@ from langchain.prompts import ChatPromptTemplate, PromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.runnables import RunnablePassthrough
 from langchain.retrievers.multi_query import MultiQueryRetriever
-import ollama
+# import ollama
 # from langchain.embeddings import OpenAIEmbeddings
 from langchain.chat_models import ChatOpenAI
 
