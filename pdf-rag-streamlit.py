@@ -22,7 +22,7 @@ import tempfile
 logging.basicConfig(level=logging.INFO)
 
 # Constants
-DOC_URL = "https://github.com/aritra-ball-2003/HoribaCb1/blob/main/HORIBA%20India%20Private%20Limited.py"
+DOC_URL = "https://github.com//aritra-ball-2003//HoribaCb1//blob//main//HORIBA%20India%20Private%20Limited.py"
 MODEL_NAME = "llama3.2:latest"
 # EMBEDDING_MODEL = "nomic-embed-text"
 VECTOR_STORE_NAME = "simple-rag"
