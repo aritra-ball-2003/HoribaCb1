@@ -28,11 +28,11 @@ VECTOR_STORE_NAME = "simple-rag"
 PERSIST_DIRECTORY = "./chroma_db"
 
 
-def ingest_pdf(doc_url):
+def ingest_pdf(doc_path):
     """Load PDF documents."""
     
-    if os.path.exists(doc_url):
-        loader = UnstructuredPDFLoader(file_path=doc_url)
+    if os.path.exists(doc_path):
+        loader = UnstructuredPDFLoader(file_path=doc_path)
         data = loader.load()
         logging.info("PDF loaded successfully.")
         return data
