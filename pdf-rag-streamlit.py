@@ -137,7 +137,7 @@ def main():
         with st.spinner("Generating response..."):
             try:
                 # Initialize the language model
-                llm = ChatOllama(model=MODEL_NAME)
+                llm = ChatOpenAI(model=MODEL_NAME)
 
                 # Load the vector database
                 vector_db = load_vector_db()
