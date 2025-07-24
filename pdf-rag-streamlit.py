@@ -19,7 +19,7 @@ import ollama
 logging.basicConfig(level=logging.INFO)
 
 # Constants
-DOC_PATH = "C:\\Users\\Aritra.ball\\Downloads\\Horribanewcb\\HORIBA India Private Limited.pdf"
+DOC_PATH = "https://github.com/aritra-ball-2003/HoribaCb1/blob/main/HORIBA%20India%20Private%20Limited.pdf"
 MODEL_NAME = "llama3.2:latest"
 EMBEDDING_MODEL = "nomic-embed-text"
 VECTOR_STORE_NAME = "simple-rag"
