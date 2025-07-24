@@ -6,45 +6,37 @@ import logging
 from langchain_community.document_loaders import UnstructuredPDFLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_community.vectorstores import Chroma
-# from langchain_ollama import OllamaEmbeddings
+from langchain_ollama import OllamaEmbeddings
 from langchain.prompts import ChatPromptTemplate, PromptTemplate
-# from langchain_ollama import ChatOllama
+from langchain_ollama import ChatOllama
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.runnables import RunnablePassthrough
 from langchain.retrievers.multi_query import MultiQueryRetriever
-# import ollama
-# from langchain.embeddings import OpenAIEmbeddings
-from langchain.chat_models import ChatOpenAI
-from langchain.embeddings import OpenAIEmbeddings
-import requests
-import tempfile 
+import ollama
+
+
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 
 # Constants
-DOC_URL = "https://github.com//aritra-ball-2003//HoribaCb1//blob//main//HORIBA%20India%20Private%20Limited.py"
+DOC_PATH = "C:\\Users\\Aritra.ball\\Downloads\\Horribanewcb\\HORIBA India Private Limited.pdf"
 MODEL_NAME = "llama3.2:latest"
-# EMBEDDING_MODEL = "nomic-embed-text"
+EMBEDDING_MODEL = "nomic-embed-text"
 VECTOR_STORE_NAME = "simple-rag"
 PERSIST_DIRECTORY = "./chroma_db"
 
 
-def ingest_pdf(DOC_URL):
-    """Download and load a PDF from a URL."""
-    try:
-        response = requests.get(DOC_URL)
-        response.raise_for_status()
-        with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as tmp_file:
-            tmp_file.write(response.content)
-            tmp_path = tmp_file.name
-
-        loader = UnstructuredPDFLoader(file_path=tmp_path)
+def ingest_pdf(doc_path):
+    """Load PDF documents."""
+    
+    if os.path.exists(doc_path):
+        loader = UnstructuredPDFLoader(file_path=doc_path)
         data = loader.load()
-        logging.info("PDF loaded successfully from GitHub.")
+        logging.info("PDF loaded successfully.")
         return data
-    except Exception as e:
-        logging.error(f"Error loading PDF from URL: {e}")
-        st.error(f"Failed to load PDF from GitHub: {e}")
+    else:
+        logging.error(f"PDF file not found at path: {doc_path}")
+        st.error("PDF file not found.")
         return None
 
 
@@ -56,15 +48,14 @@ def split_documents(documents):
     return chunks
 
 
-
 @st.cache_resource
 def load_vector_db():
     """Load or create the vector database."""
+    # Pull the embedding model if not already available
+    ollama.pull(EMBEDDING_MODEL)
 
-    openai_key = st.secrets["OPENAI_API_KEY"]
+    embedding = OpenAIEmbeddings
 
-    embedding = OpenAIEmbeddings(openai_api_key=openai_key)
-    llm = ChatOpenAI(model="gpt-3.5-turbo", openai_api_key=openai_key)
 
     if os.path.exists(PERSIST_DIRECTORY):
         vector_db = Chroma(
@@ -75,7 +66,7 @@ def load_vector_db():
         logging.info("Loaded existing vector database.")
     else:
         # Load and process the PDF document
-        data = ingest_pdf(DOC_URL)
+        data = ingest_pdf(DOC_PATH)
         if data is None:
             return None
 
@@ -143,7 +134,7 @@ def main():
         with st.spinner("Generating response..."):
             try:
                 # Initialize the language model
-                llm = ChatOpenAI(model=MODEL_NAME)
+                llm = ChatOllama(model=MODEL_NAME)
 
                 # Load the vector database
                 vector_db = load_vector_db()
@@ -170,3 +161,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
