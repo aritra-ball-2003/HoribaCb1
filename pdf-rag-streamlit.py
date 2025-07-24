@@ -47,15 +47,13 @@ def split_documents(documents):
     logging.info("Documents split into chunks.")
     return chunks
 
-
 @st.cache_resource
 def load_vector_db():
     """Load or create the vector database."""
     # Pull the embedding model if not already available
     ollama.pull(EMBEDDING_MODEL)
 
-    embedding = OpenAIEmbeddings
-
+    embedding = OllamaEmbeddings(model=EMBEDDING_MODEL)
 
     if os.path.exists(PERSIST_DIRECTORY):
         vector_db = Chroma(
@@ -82,7 +80,6 @@ def load_vector_db():
         vector_db.persist()
         logging.info("Vector database created and persisted.")
     return vector_db
-
 
 def create_retriever(vector_db, llm):
     """Create a multi-query retriever."""
